@@ -1,24 +1,26 @@
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+"""Pydantic / SQLModel schemas.
 
+All user schemas are defined in models.py using SQLModel to prevent code duplication.
+They are re-exported here for convenience and backwards compatibility.
+"""
 
-class RegisterRequest(BaseModel):
-    first_name: str = Field(min_length=1, max_length=50)
-    last_name: str = Field(min_length=1, max_length=50)
-    email: EmailStr
-    password: str = Field(min_length=15)
-    nickname: str | None = Field(default=None, max_length=50)
+from models import (
+    UserBase,
+    UserCreate,
+    UserLogin,
+    UserRead,
+    # Aliases matching previous schema names
+    UserCreate as RegisterRequest,
+    UserLogin as LoginRequest,
+    UserRead as UserResponse,
+)
 
-
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class UserResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int
-    first_name: str
-    last_name: str
-    email: EmailStr
-    nickname: str
+__all__ = [
+    "UserBase",
+    "UserCreate",
+    "UserLogin",
+    "UserRead",
+    "RegisterRequest",
+    "LoginRequest",
+    "UserResponse",
+]

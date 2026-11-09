@@ -4,15 +4,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
-import models
-from database import Base, engine
+from database import engine, init_db
 from routers.auth import router as auth_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Create tables on startup
-    Base.metadata.create_all(bind=engine)
+    init_db()
     yield
 
 
